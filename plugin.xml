@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    id="org.nypr.cordova.googleanalyticsplugin"
+    version="0.1.0">
+    <name>Device</name>
+    <description>Google Analytics Plugin</description>
+    <license>Apache 2.0</license>
+    <keywords>google,analytics</keywords>
+    <repo>git@git.wnyc.net:mobile/cordova/cordova-plugin-googleanalytics.git</repo>
+
+    <!-- android -->
+    <platform name="android">
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="GoogleAnalyticsPlugin" >
+                <param name="android-package" value="org.nypr.cordova.googleanalyticsplugin.GoogleAnalyticsPlugin"/>
+            </feature>
+        </config-file>
+
+        <config-file target="AndroidManifest.xml" parent="/*">
+          <uses-permission android:name="android.permission.INTERNET" />
+        </config-file>
+
+        <config-file target="AndroidManifest.xml" parent="/*">
+          <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+        </config-file>
+
+        <source-file src="src/android/GoogleAnalyticsPlugin.java" target-dir="src/org/nypr/cordova/googleanalyticsplugin/" />
+        <source-file src="src/android/libGoogleAnalyticsV2.jar" target-dir="libs" />
+    </platform>
+
+    <!-- ios -->
+    <!--
+    <platform name="ios">
+        <config-file target="config.xml" parent="/*">
+            <feature name="Device">
+                <param name="ios-package" value="CDVDevice"/>
+            </feature>
+        </config-file>
+
+        <header-file src="src/ios/CDVDevice.h" />
+        <source-file src="src/ios/CDVDevice.m" />
+    </platform>
+    -->
+</plugin>
