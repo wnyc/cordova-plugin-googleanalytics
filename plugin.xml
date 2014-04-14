@@ -28,6 +28,7 @@
 
         <source-file src="src/android/GoogleAnalyticsPlugin.java" target-dir="src/org/nypr/cordova/googleanalyticsplugin/" />
         <source-file src="src/android/libGoogleAnalyticsV2.jar" target-dir="libs" />
+        <resource-file src="res/android/" target="res" />
     </platform>
 
     <!-- ios -->
