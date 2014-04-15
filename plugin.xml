@@ -32,16 +32,25 @@
     </platform>
 
     <!-- ios -->
-    <!--
     <platform name="ios">
         <config-file target="config.xml" parent="/*">
-            <feature name="Device">
-                <param name="ios-package" value="CDVDevice"/>
+            <feature name="GoogleAnalyticsPlugin">
+                <param name="ios-package" value="GoogleAnalyticsPlugin" />
+                <param name="onload" value="true" />
             </feature>
         </config-file>
 
-        <header-file src="src/ios/CDVDevice.h" />
-        <source-file src="src/ios/CDVDevice.m" />
+        <header-file src="src/ios/GoogleAnalyticsPlugin.h" />
+        <header-file src="src/ios/GAI.h" />
+        <header-file src="src/ios/GAITracker.h" />
+        <header-file src="src/ios/GAITrackedViewController.h" />
+        <header-file src="src/ios/GAITransaction.h" />
+        <header-file src="src/ios/GAITransactionItem.h" />
+
+        <source-file src="src/ios/GoogleAnalyticsPlugin.m" />
+
+        <source-file src="src/ios/libGoogleAnalytics.a" framework="true" />
+        <framework src="SystemConfiguration.framework" />
+        <framework src="CoreData.framework" />
     </platform>
-    -->
 </plugin>
