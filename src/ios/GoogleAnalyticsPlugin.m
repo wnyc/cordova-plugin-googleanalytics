@@ -20,7 +20,7 @@
     // Optional: set Google Analytics dispatch interval to e.g. 20 seconds.
     [GAI sharedInstance].dispatchInterval = 30;
     // Optional: set debug to YES for extra debugging information.
-    [GAI sharedInstance].debug = YES;
+    //[GAI sharedInstance].debug = YES;
     
     NSString * gaKey = @"__GA_KEY__";
     if( gaKey!=nil && [gaKey isEqualToString:@""]==NO && [gaKey rangeOfString:@"GA_KEY"].location == NSNotFound ){
