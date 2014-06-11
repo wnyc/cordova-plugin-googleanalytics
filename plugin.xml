@@ -42,10 +42,11 @@
 
         <header-file src="src/ios/GoogleAnalyticsPlugin.h" />
         <header-file src="src/ios/GAI.h" />
+        <header-file src="src/ios/GAIFields.h" />
         <header-file src="src/ios/GAITracker.h" />
         <header-file src="src/ios/GAITrackedViewController.h" />
-        <header-file src="src/ios/GAITransaction.h" />
-        <header-file src="src/ios/GAITransactionItem.h" />
+        <header-file src="src/ios/GAILogger.h" />
+        <header-file src="src/ios/GAIDictionaryBuilder.h" />
 
         <source-file src="src/ios/GoogleAnalyticsPlugin.m" />
 
