@@ -1,9 +1,5 @@
 //
 //  GoogleAnalyticsPlugin.h
-//  NYPRNative
-//
-//  Created by Brad Kammin on 4/1/14.
-//
 //
 
 #import <Cordova/CDVPlugin.h>
