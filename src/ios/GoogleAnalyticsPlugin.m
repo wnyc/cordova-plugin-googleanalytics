@@ -4,6 +4,8 @@
 
 #import "GoogleAnalyticsPlugin.h"
 #import "GAI.h"
+#import "GAIFields.h"
+#import "GAIDictionaryBuilder.h"
 
 @implementation GoogleAnalyticsPlugin
 
@@ -72,14 +74,14 @@
 
 - (void)_logGAEvent:(NSString *)category action:(NSString *)action label:(NSString *)label value:(NSNumber *)value {
     id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
-    [tracker sendEventWithCategory:category
-                        withAction:action
-                         withLabel:label
-                         withValue:value];
+    [tracker send:[[GAIDictionaryBuilder createEventWithCategory:category action:action label:label value:value] build]];
 }
 
 - (void)_logScreenView:(NSString*) screen {
-    [[[GAI sharedInstance] defaultTracker] sendView:screen];
+    id tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker set:kGAIScreenName value:screen];
+    [tracker send:[[GAIDictionaryBuilder createAppView] build]];
+    [tracker set:kGAIScreenName value:nil];
 }
 
 @end
