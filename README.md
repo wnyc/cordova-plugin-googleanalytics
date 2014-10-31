@@ -38,9 +38,9 @@ TODO - update plugin to latest SDK versions
 
 ## Usage
 
-  // log an event  
-  window.googleanalytics.logevent(  successCallback, failureCallback, category, action, label, value );
+    // log an event  
+    window.googleanalytics.logevent(  successCallback, failureCallback, category, action, label, value );
 
-  // log a screen view  
-  window.googleanalytics.logscreenview(  successCallback, failureCallback, screen );
+    // log a screen view  
+    window.googleanalytics.logscreenview(  successCallback, failureCallback, screen );
 
