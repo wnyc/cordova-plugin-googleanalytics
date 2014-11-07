@@ -5,11 +5,11 @@ var exec = require("cordova/exec");
  */    
 var GoogleAnalytics = function(){};
 
-Flurry.prototype.logevent = function(success, error, category, action, label, value) {
+GoogleAnalytics.prototype.logevent = function(success, error, category, action, label, value) {
   exec(success, error, "GoogleAnalyticsPlugin", "logevent", [category, action, label, value]);
 };
 
-Flurry.prototype.logscreenview = function(success, error, screen) {
+GoogleAnalytics.prototype.logscreenview = function(success, error, screen) {
   exec(success, error, "GoogleAnalyticsPlugin", "logscreenview", [screen]);
 };
 
