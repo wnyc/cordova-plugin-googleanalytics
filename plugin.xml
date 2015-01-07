@@ -4,11 +4,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     id="org.nypr.cordova.googleanalyticsplugin"
     version="0.1.0">
-    <name>Device</name>
+    <name>Google Analytics Plugin</name>
     <description>Google Analytics Plugin</description>
     <license>Apache 2.0</license>
     <keywords>google,analytics</keywords>
-    <repo>git@git.wnyc.net:mobile/cordova/cordova-plugin-googleanalytics.git</repo>
+    <repo>https://github.com/wnyc/cordova-plugin-googleanalytics.git</repo>
 
     <js-module src="www/googleanalytics.js" name="GoogleAnalytics">
       <clobbers target="googleanalytics"/>
@@ -24,14 +24,10 @@
 
         <config-file target="AndroidManifest.xml" parent="/*">
           <uses-permission android:name="android.permission.INTERNET" />
-        </config-file>
-
-        <config-file target="AndroidManifest.xml" parent="/*">
           <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
         </config-file>
 
         <source-file src="src/android/GoogleAnalyticsPlugin.java" target-dir="src/org/nypr/cordova/googleanalyticsplugin/" />
-        <source-file src="src/android/libGoogleAnalyticsV2.jar" target-dir="libs" />
         <resource-file src="res/android/" target="res" />
     </platform>
 
