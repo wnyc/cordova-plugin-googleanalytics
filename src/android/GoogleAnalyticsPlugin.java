@@ -1,15 +1,14 @@
 package org.nypr.cordova.googleanalyticsplugin;
 
-import org.apache.cordova.CordovaWebView;
 import org.apache.cordova.CallbackContext;
-import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaPlugin;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.nypr.android.R;
 
-import com.google.analytics.tracking.android.EasyTracker;
-import com.google.analytics.tracking.android.GoogleAnalytics;
-import com.google.analytics.tracking.android.Tracker;
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import android.util.Log;
 
@@ -20,30 +19,6 @@ public class GoogleAnalyticsPlugin extends CordovaPlugin {
 	protected static final String LOG_TAG = "GoogleAnalyticsPlugin";
 	
 	protected Tracker mTracker; 
-	
-	public GoogleAnalyticsPlugin() {
-		Log.d(LOG_TAG, "Google Analytics Plugin constructed");
-	}
-
-	@Override
-	public void initialize(CordovaInterface cordova, CordovaWebView webView) {
-    	EasyTracker.getInstance().activityStart(cordova.getActivity());
-		super.initialize(cordova, webView);
-		Log.d(LOG_TAG, "Google Analytics Plugin initialized");
-	}
-	
-	@Override
-	public void onDestroy() {
-		Log.d(LOG_TAG, "Google Analytics Plugin ending session");
-		EasyTracker.getInstance().activityStop(cordova.getActivity());
-		super.onDestroy();
-	}
-
-	@Override
-	public void onReset() {
-		Log.d(LOG_TAG, "Google Analytics Plugin onReset--WebView has navigated to new page or refreshed.");
-		super.onReset();
-	}
 	
 	@Override
 	public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
@@ -87,14 +62,15 @@ public class GoogleAnalyticsPlugin extends CordovaPlugin {
 	protected void _setTracker() {
 		if(mTracker==null && cordova.getActivity()!=null) {
 			GoogleAnalytics myInstance = GoogleAnalytics.getInstance(cordova.getActivity());
-			mTracker = myInstance.getDefaultTracker();
+			mTracker = myInstance.newTracker(R.xml.analytics);
 		}
 	}
 	
-	protected void _logScreenView(String screen) throws JSONException {
+	protected void _logScreenView(String screen) {
 		Log.d(LOG_TAG, "Google Analytics logging screen view (" + screen + ")");
 		if ( mTracker != null && screen != null ) {
-			mTracker.sendView(screen);
+			mTracker.setScreenName(screen);
+			mTracker.send(new HitBuilders.AppViewBuilder().build());
 		} else {
 			Log.d(LOG_TAG, "GA Tracker not configured");
 		}
@@ -103,7 +79,14 @@ public class GoogleAnalyticsPlugin extends CordovaPlugin {
 	protected void _trackEvent(String category, String action, String label, Long value){
 		Log.d(LOG_TAG, "Google Analytics logging event (" + action + ")");
 		if ( mTracker != null ) {
-			mTracker.sendEvent(category, action, label, value);
+			
+			mTracker.send(new HitBuilders.EventBuilder()
+					.setCategory(category)
+					.setAction(action)
+					.setLabel(label)
+					.setValue(value)
+					.build());
+			
 		} else {
 			Log.d(LOG_TAG, "GA Tracker not configured");
 		}
