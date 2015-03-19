@@ -24,6 +24,9 @@
     if( gaKey!=nil && [gaKey isEqualToString:@""]==NO && [gaKey rangeOfString:@"GA_KEY"].location == NSNotFound ){
         // Create tracker instance. This tracker can later be retreived by calling defaultTracker
         [[GAI sharedInstance] trackerWithTrackingId:gaKey];
+
+        id tracker = [[GAI sharedInstance] defaultTracker];
+        tracker.allowIDFACollection = YES;
     }
     
     NSLog(@"Google Analytics Plugin initialized");
