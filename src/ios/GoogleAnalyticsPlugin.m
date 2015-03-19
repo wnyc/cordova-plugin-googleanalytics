@@ -7,7 +7,7 @@
 #import "GAIFields.h"
 #import "GAIDictionaryBuilder.h"
 
-static int const kGoogleAnalyticsPluginHeartbeatInterval= 60;
+static int const kGoogleAnalyticsPluginHeartbeatInterval= 60 * 5; // 5 minutes
 static NSString *const kGoogleAnalyticsPluginDefaultCategory = @"Unknown";
 static NSString *const kGoogleAnalyticsPluginHeartbeatAction = @"SessionHeartbeat";
 
