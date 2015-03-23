@@ -39,9 +39,6 @@ static NSString *const kGoogleAnalyticsPluginHeartbeatAction = @"SessionHeartbea
         // Create tracker instance. This tracker can later be retreived by calling defaultTracker
         [[GAI sharedInstance] trackerWithTrackingId:gaKey];
         
-        id tracker = [[GAI sharedInstance] defaultTracker];
-        tracker.allowIDFACollection = YES;
-
         // manually start new GA session
         [self _startNewSession];
     }
