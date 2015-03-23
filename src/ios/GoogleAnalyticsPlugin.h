@@ -7,7 +7,9 @@
 
 @interface GoogleAnalyticsPlugin : CDVPlugin
 
-- (void)logevent:(CDVInvokedUrlCommand*)command;
-- (void)logscreenview:(CDVInvokedUrlCommand*)command;
+- (void)setuseheartbeat:(CDVInvokedUrlCommand *)command;
+- (void)setdefaultcategory:(CDVInvokedUrlCommand *)command;
+- (void)logevent:(CDVInvokedUrlCommand *)command;
+- (void)logscreenview:(CDVInvokedUrlCommand *)command;
 
 @end
