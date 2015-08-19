@@ -55,6 +55,7 @@
         <source-file src="src/ios/GoogleAnalyticsPlugin.m" />
 
         <source-file src="src/ios/libGoogleAnalyticsServices.a" framework="true" />
+        <source-file src="src/ios/libAdIdAccess.a" framework="true" />
         <framework src="SystemConfiguration.framework" />
         <framework src="CoreData.framework" />
         <framework src="AdSupport.framework" />
