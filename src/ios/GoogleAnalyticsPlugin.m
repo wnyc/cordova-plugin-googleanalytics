@@ -92,8 +92,13 @@ static NSString *const kGoogleAnalyticsPluginHeartbeatAction = @"SessionHeartbea
 - (void)logscreenview:(CDVInvokedUrlCommand *)command {
     CDVPluginResult* pluginResult = nil;
     NSString* screen = [command.arguments objectAtIndex:0];
+    NSString *gaAccountId;
     
-    [self _logScreenView:screen];
+    if ([command.arguments objectAtIndex:1] != [NSNull null]) {
+        gaAccountId = [command.arguments objectAtIndex:1];
+    }
+    
+    [self _logScreenView:screen gaAccountId:gaAccountId];
     
     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
@@ -110,6 +115,7 @@ static NSString *const kGoogleAnalyticsPluginHeartbeatAction = @"SessionHeartbea
     NSString * action = [command.arguments objectAtIndex:1];
     NSString * label = [command.arguments objectAtIndex:2];
     NSNumber * value = [NSNumber numberWithInt:0];
+    NSString * gaAccountId;
     
     if( [command.arguments count] > 3 ) {
         NSString * valueString = [command.arguments objectAtIndex:3];
@@ -117,21 +123,39 @@ static NSString *const kGoogleAnalyticsPluginHeartbeatAction = @"SessionHeartbea
             value = [NSNumber numberWithInt:[valueString intValue]];
         }
     }
-    [self _logGAEvent:category
-                           action:action
-                            label:label
-                            value:value];
+    
+    if ([command.arguments objectAtIndex:4] != [NSNull null]) {
+        gaAccountId = [command.arguments objectAtIndex:4];
+    }
+    
+    [self _logGAEvent:category action:action label:label value:value gaAccountId:gaAccountId];
+    
     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
-- (void)_logGAEvent:(NSString *)category action:(NSString *)action label:(NSString *)label value:(NSNumber *)value {
-    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+- (void)_logGAEvent:(NSString *)category action:(NSString *)action label:(NSString *)label value:(NSNumber *)value gaAccountId:(NSString *)gaAccountId {
+    id<GAITracker> tracker;
+    
+    if (gaAccountId) {
+        tracker = [[GAI sharedInstance] trackerWithTrackingId:gaAccountId];
+    }
+    else {
+        tracker = [[GAI sharedInstance] defaultTracker];
+    }
     [tracker send:[[GAIDictionaryBuilder createEventWithCategory:category action:action label:label value:value] build]];
 }
 
-- (void)_logScreenView:(NSString*) screen {
-    id tracker = [[GAI sharedInstance] defaultTracker];
+- (void)_logScreenView:(NSString *)screen gaAccountId:(NSString *)gaAccountId {
+    id<GAITracker> tracker;
+    
+    if (gaAccountId) {
+        tracker = [[GAI sharedInstance] trackerWithTrackingId:gaAccountId];
+    }
+    else {
+        tracker = [[GAI sharedInstance] defaultTracker];
+    }
+    
     [tracker set:kGAIScreenName value:screen];
     [tracker send:[[GAIDictionaryBuilder createAppView] build]];
     [tracker set:kGAIScreenName value:nil];
@@ -167,7 +191,7 @@ static NSString *const kGoogleAnalyticsPluginHeartbeatAction = @"SessionHeartbea
 }
 
 - (void) _heartbeat {
-    [self _logGAEvent:self.defaultCategory action:kGoogleAnalyticsPluginHeartbeatAction label:nil value:0];
+    [self _logGAEvent:self.defaultCategory action:kGoogleAnalyticsPluginHeartbeatAction label:nil value:0 gaAccountId:nil];
 }
 
 #pragma App state change handlers
