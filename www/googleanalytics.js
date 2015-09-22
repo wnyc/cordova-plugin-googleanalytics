@@ -13,12 +13,12 @@ GoogleAnalytics.prototype.setUseHeartbeat = function(useHeartbeat, success, erro
   exec(success, error, "GoogleAnalyticsPlugin", "setuseheartbeat", [useHeartbeat]);
 };
 
-GoogleAnalytics.prototype.logevent = function(success, error, category, action, label, value) {
-  exec(success, error, "GoogleAnalyticsPlugin", "logevent", [category, action, label, value]);
+GoogleAnalytics.prototype.logevent = function(success, error, category, action, label, value, gaAccountId) {
+  exec(success, error, "GoogleAnalyticsPlugin", "logevent", [category, action, label, value, gaAccountId]);
 };
 
-GoogleAnalytics.prototype.logscreenview = function(success, error, screen) {
-  exec(success, error, "GoogleAnalyticsPlugin", "logscreenview", [screen]);
+GoogleAnalytics.prototype.logscreenview = function(success, error, screen, gaAccountId) {
+  exec(success, error, "GoogleAnalyticsPlugin", "logscreenview", [screen, gaAccountId]);
 };
 
 module.exports = new GoogleAnalytics();
