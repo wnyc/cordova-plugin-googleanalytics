@@ -11,8 +11,6 @@
   <bool name="ga_reportUncaughtExceptions">false</bool>
   
   <!--Dispatch period in seconds-->
-  <integer name="ga_dispatchPeriod">30</integer>
+  <int name="ga_dispatchPeriod">30</int>
   
-  <!--Turn on/off logging-->
-  <bool name="ga_debug">true</bool>
 </resources>
