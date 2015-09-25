@@ -9,23 +9,22 @@ import org.nypr.android.R;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.google.android.gms.analytics.Logger.LogLevel;
 
 import android.util.Log;
+import java.util.HashMap;
 
 // Google Analytics Key set in analytics.xml
 
 public class GoogleAnalyticsPlugin extends CordovaPlugin {
 
 	protected static final String LOG_TAG = "GoogleAnalyticsPlugin";
-	
-	protected Tracker mTracker; 
+	protected HashMap<String, Tracker> mTrackers;
 	
 	@Override
 	public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
 		boolean ret=true;
 		try {
-			_setTracker();
-			
 			if(action.equalsIgnoreCase("logevent")){
         		String c = args.getString(0);
         		String a = args.getString(1);
@@ -40,10 +39,16 @@ public class GoogleAnalyticsPlugin extends CordovaPlugin {
 						}
         			}
         		}
-				_trackEvent(c, a, l, v);	
+
+				Tracker tracker = getTrackerFromArguments(args, 4);
+
+				_trackEvent(tracker, c, a, l, v);
 				callbackContext.success();
 			}else if (action.equalsIgnoreCase("logscreenview")){
-				_logScreenView(args.getString(0));
+
+				Tracker tracker = getTrackerFromArguments(args, 1);
+
+				_logScreenView(tracker, args.getString(0));
 				callbackContext.success();
 			}else{
 				callbackContext.error(LOG_TAG + " error: invalid action (" + action + ")");
@@ -58,29 +63,63 @@ public class GoogleAnalyticsPlugin extends CordovaPlugin {
 		}
 		return ret;
 	}
-	
-	protected void _setTracker() {
-		if(mTracker==null && cordova.getActivity()!=null) {
-			GoogleAnalytics myInstance = GoogleAnalytics.getInstance(cordova.getActivity());
-			mTracker = myInstance.newTracker(R.xml.analytics);
-		}
-	}
-	
-	protected void _logScreenView(String screen) {
+
+    protected Tracker getTrackerFromArguments(JSONArray args, int index) throws JSONException {
+        String trackerId = null;
+        if ( args.length() > index) {
+            if ( args.get(index)!=null && !args.getString(index).equals("null")) {
+                try {
+                    trackerId = args.getString(index);
+                } catch (JSONException e) {
+                    trackerId = null;
+                }
+            }
+        }
+
+        return getTrackerById(trackerId);
+    }
+
+    protected Tracker getTrackerById(String trackerId) {
+
+        if (mTrackers == null) {
+            mTrackers = new HashMap<String, Tracker>();
+
+            GoogleAnalytics.getInstance(cordova.getActivity()).getLogger().setLogLevel(LogLevel.VERBOSE);
+        }
+
+        if (trackerId == null) {
+            trackerId = "default";
+        }
+
+        if (!mTrackers.containsKey(trackerId)) {
+            Tracker tracker;
+            GoogleAnalytics googleAnalyticsInstance = GoogleAnalytics.getInstance(cordova.getActivity());
+            if (trackerId.equals("default")) {
+                tracker = googleAnalyticsInstance.newTracker(R.xml.analytics);
+            } else {
+                tracker = googleAnalyticsInstance.newTracker(trackerId);
+            }
+            mTrackers.put(trackerId, tracker);
+        }
+
+        return mTrackers.get(trackerId);
+    }
+
+	protected void _logScreenView(Tracker tracker, String screen) {
 		Log.d(LOG_TAG, "Google Analytics logging screen view (" + screen + ")");
-		if ( mTracker != null && screen != null ) {
-			mTracker.setScreenName(screen);
-			mTracker.send(new HitBuilders.AppViewBuilder().build());
+		if ( tracker != null && screen != null ) {
+            tracker.setScreenName(screen);
+            tracker.send(new HitBuilders.AppViewBuilder().build());
 		} else {
 			Log.d(LOG_TAG, "GA Tracker not configured");
 		}
 	}
 		
-	protected void _trackEvent(String category, String action, String label, Long value){
+	protected void _trackEvent(Tracker tracker, String category, String action, String label, Long value){
 		Log.d(LOG_TAG, "Google Analytics logging event (" + action + ")");
-		if ( mTracker != null ) {
-			
-			mTracker.send(new HitBuilders.EventBuilder()
+		if ( tracker != null ) {
+
+            tracker.send(new HitBuilders.EventBuilder()
 					.setCategory(category)
 					.setAction(action)
 					.setLabel(label)
