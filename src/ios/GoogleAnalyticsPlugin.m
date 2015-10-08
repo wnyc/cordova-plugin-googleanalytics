@@ -94,8 +94,10 @@ static NSString *const kGoogleAnalyticsPluginHeartbeatAction = @"SessionHeartbea
     NSString* screen = [command.arguments objectAtIndex:0];
     NSString *gaAccountId;
     
-    if ([command.arguments objectAtIndex:1] != [NSNull null]) {
-        gaAccountId = [command.arguments objectAtIndex:1];
+    if ([command.arguments count] > 1) {
+        if ([command.arguments objectAtIndex:1] != [NSNull null]) {
+            gaAccountId = [command.arguments objectAtIndex:1];
+        }
     }
     
     [self _logScreenView:screen gaAccountId:gaAccountId];
@@ -124,8 +126,10 @@ static NSString *const kGoogleAnalyticsPluginHeartbeatAction = @"SessionHeartbea
         }
     }
     
-    if ([command.arguments objectAtIndex:4] != [NSNull null]) {
-        gaAccountId = [command.arguments objectAtIndex:4];
+    if ([command.arguments count] > 4) {
+        if ([command.arguments objectAtIndex:4] != [NSNull null]) {
+            gaAccountId = [command.arguments objectAtIndex:4];
+        }
     }
     
     [self _logGAEvent:category action:action label:label value:value gaAccountId:gaAccountId];
